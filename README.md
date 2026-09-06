@@ -57,7 +57,7 @@ flowchart TD
 | 프론트엔드 | React + TypeScript (Vite) |
 | 회원가입/로그인 · DB | Supabase (Auth + Postgres) |
 | 코드 에디터 | Monaco Editor (연결 검증 완료) |
-| 코드 실행 · 채점 | Pyodide — 브라우저에서 Python 실행, pandas/numpy/matplotlib 지원, 챕터별로 필요한 패키지만 로드 (연결 검증 완료) |
+| 코드 실행 · 채점 | Pyodide — 브라우저에서 Python 실행, pandas/numpy/matplotlib/sqlite3 지원, 챕터별로 필요한 패키지만 로드. SQLAlchemy/mongomock처럼 Pyodide 기본 목록에 없는 라이브러리는 micropip으로 설치 (연결 검증 완료) |
 | 화면 이동(라우팅) | React Router (`react-router-dom`) — 챕터별 URL(`/chapter/:chapterId`) 이동 |
 | 배포 | Vercel / GitHub Pages *(예정)* |
 
@@ -79,7 +79,7 @@ flowchart TD
 5. 프로젝트 기반 학습 (헬스케어 미니 프로젝트) *(완성)*
 
 **3. 데이터베이스(DB) 기초** (SQL + Python 연동 + ORM + NoSQL)
-1. 데이터베이스 기본 개념 이해
+1. 데이터베이스 기본 개념 이해 *(완성)*
 2. SQL 기초 및 데이터 조회
 3. Python + DB 연동 경험
 4. ORM(SQLAlchemy)과 모델링
@@ -106,8 +106,9 @@ flowchart TD
 - [x] 챕터 8 완성 — "1. 데이터 표현 이해 > 함수와 그래프 이해하기" (선형/지수/로그 계산 → 그래프 비교/Sigmoid 계산·그리기 → 함수 성장속도 비교/ReLU·Sigmoid 비교/수치미분)
 - [x] 챕터 9 완성 — "1. 데이터 표현 이해 > 데이터 요약과 통계" (평균·중앙값/분산·표준편차/백분위수 → z-점수/히스토그램+평균선/분산 비교 → 이상치 탐지/분포 비교/종합 요약). **모듈1(데이터 표현 이해) 4챕터 전부 완성**
 - [x] 버그 수정 — 챕터 이동 시 이전 챕터의 실행결과·채점상태가 안 지워지던 문제 (`ChapterPage`에 `key` 부여)
+- [x] 챕터 10 완성 — "3. 데이터베이스(DB) 기초 > 데이터베이스 기본 개념 이해" (실제 MySQL 서버는 브라우저에서 구동 불가하여, 같은 SQL 문법·Python DB-API를 쓰는 SQLite로 대체: 테이블 생성+행 개수/컬럼 조회/기본키 제약 → JOIN/GROUP BY 집계/외래키 무결성 → 테이블 목록/스키마 요약/캡스톤). Pyodide에 micropip 설치 경로 추가(추후 SQLAlchemy·mongomock 챕터에서 재사용)
 - [ ] 대시보드 화면 (전체 진행률 %) 제작
-- [ ] 나머지 6개 챕터 콘텐츠 제작 (모듈3 전체)
+- [ ] 나머지 5개 챕터 콘텐츠 제작 (모듈3 나머지)
 
 ## 로컬 실행 방법
 ```bash
