@@ -27,6 +27,12 @@ function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackag
   const [exampleImage, setExampleImage] = useState<string | null>(null)
   const runExampleRef = useRef<() => void>(() => {})
 
+  // 챕터가 바뀔 때마다(다음 챕터 버튼 포함) 스크롤을 맨 위로 올려서
+  // 첫 문제부터 보이게 합니다.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [chapterId])
+
   useEffect(() => {
     let cancelled = false
     async function load() {
