@@ -2,9 +2,8 @@ import { useRef, useState } from 'react'
 import Editor, { type OnMount } from '@monaco-editor/react'
 import { runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
 
-interface TierExerciseProps {
+interface ExerciseCardProps {
   pyodide: PyodideInterface
-  label: string
   prompt: string
   starterCode: string
   /** 학생 코드 뒤에 이어붙여 실행할 파이썬 검증 코드 (assert 문) */
@@ -12,7 +11,6 @@ interface TierExerciseProps {
   hint: string
   solutionCode: string
   solutionExplain: string
-  locked: boolean
   initiallyPassed: boolean
   onPass: () => void
 }
@@ -35,56 +33,34 @@ function parseGrade(output: string): { ok: boolean; message: string } | null {
   return { ok: rest.slice(0, sep) === 'PASS', message: rest.slice(sep + 1) }
 }
 
-function TierExercise({
+function ExerciseCard({
   pyodide,
-  label,
   prompt,
   starterCode,
   assertion,
   hint,
   solutionCode,
   solutionExplain,
-  locked,
   initiallyPassed,
   onPass,
-}: TierExerciseProps) {
+}: ExerciseCardProps) {
   const [code, setCode] = useState(starterCode)
   const [running, setRunning] = useState(false)
   const [feedback, setFeedback] = useState<{ ok: boolean; message: string } | null>(null)
   const [showHint, setShowHint] = useState(false)
   const [showSolution, setShowSolution] = useState(false)
   const [passed, setPassed] = useState(initiallyPassed)
-  // Editor의 onMount는 마운트 시점에 한 번만 호출되므로, 항상 최신 handleGrade를
-  // 실행할 수 있게 ref를 하나 만들어둡니다. (Hooks 규칙상 조건부 return보다 위에 있어야 함)
   const handleGradeRef = useRef<() => void>(() => {})
-
-  if (locked) {
-    return (
-      <div
-        style={{
-          padding: 16,
-          border: '1px dashed #ccc',
-          borderRadius: 8,
-          marginBottom: 16,
-          color: '#999',
-          fontSize: 13,
-        }}
-      >
-        🔒 {label} — 이전 단계를 먼저 통과하면 열립니다.
-      </div>
-    )
-  }
 
   async function handleGrade() {
     setRunning(true)
     setFeedback(null)
 
-    // 학생 코드 뒤에 채점용 assert 문을 이어붙여서 실행합니다.
     const gradingCode = `${code}
 
 try:
 ${indent(assertion)}
-    print("__GRADE__:PASS:정답입니다! 다음 단계로 진행하세요.")
+    print("__GRADE__:PASS:정답입니다!")
 except AssertionError as e:
     print(f"__GRADE__:FAIL:{str(e) if str(e) else '값이 일치하지 않습니다. 다시 확인해보세요.'}")
 except Exception as e:
@@ -114,24 +90,11 @@ except Exception as e:
   }
 
   return (
-    <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, marginBottom: 16 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            color: '#2563eb',
-            background: '#eff6ff',
-            padding: '2px 8px',
-            borderRadius: 12,
-          }}
-        >
-          {label}
-        </span>
-        {passed && <span style={{ fontSize: 12, color: '#16a34a' }}>✅ 통과</span>}
+    <div style={{ padding: 16, border: '1px solid var(--color-border)', borderRadius: 10, marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        <p style={{ fontSize: 14, margin: 0 }}>{prompt}</p>
+        {passed && <span style={{ fontSize: 13, color: 'var(--color-success)', flexShrink: 0, marginLeft: 12 }}>✅ 통과</span>}
       </div>
-
-      <p style={{ fontSize: 13, marginBottom: 10 }}>{prompt}</p>
 
       <Editor
         height="140px"
@@ -139,10 +102,10 @@ except Exception as e:
         value={code}
         onChange={(v) => setCode(v ?? '')}
         onMount={handleEditorMount}
-        options={{ fontSize: 13, minimap: { enabled: false } }}
+        options={{ fontSize: 14, minimap: { enabled: false } }}
       />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
         <button onClick={handleGrade} disabled={running}>
           채점하기
         </button>
@@ -152,11 +115,11 @@ except Exception as e:
             {showSolution ? '정답 숨기기' : '정답 해설 보기'}
           </button>
         )}
-        <span style={{ fontSize: 11, color: '#999' }}>Shift+Enter로도 채점돼요</span>
+        <span style={{ fontSize: 12, color: '#999' }}>Shift+Enter로도 채점돼요</span>
       </div>
 
       {showHint && (
-        <div style={{ marginTop: 8, fontSize: 12.5, color: '#92400e', background: '#fffbeb', padding: 10, borderRadius: 6 }}>
+        <div style={{ marginTop: 8, fontSize: 13.5, color: 'var(--color-warning)', background: 'var(--color-warning-soft)', padding: 10, borderRadius: 6 }}>
           💡 {hint}
         </div>
       )}
@@ -165,11 +128,11 @@ except Exception as e:
         <div
           style={{
             marginTop: 8,
-            fontSize: 12.5,
+            fontSize: 13.5,
             padding: 10,
             borderRadius: 6,
-            background: feedback.ok ? '#f0fdf4' : '#fef2f2',
-            color: feedback.ok ? '#16a34a' : '#dc2626',
+            background: feedback.ok ? 'var(--color-success-soft)' : 'var(--color-danger-soft)',
+            color: feedback.ok ? 'var(--color-success)' : 'var(--color-danger)',
           }}
         >
           {feedback.ok ? '✅' : '❌'} {feedback.message}
@@ -184,17 +147,17 @@ except Exception as e:
               color: '#d4d4d4',
               padding: 10,
               borderRadius: 6,
-              fontSize: 12.5,
+              fontSize: 13.5,
               whiteSpace: 'pre-wrap',
             }}
           >
             {solutionCode}
           </pre>
-          <p style={{ fontSize: 12.5, color: '#555', marginTop: 6 }}>{solutionExplain}</p>
+          <p style={{ fontSize: 13.5, color: '#555', marginTop: 6 }}>{solutionExplain}</p>
         </div>
       )}
     </div>
   )
 }
 
-export default TierExercise
+export default ExerciseCard

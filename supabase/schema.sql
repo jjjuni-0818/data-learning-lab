@@ -1,6 +1,7 @@
 -- Data Learning Lab: progress 테이블
--- 회원별로 어떤 모듈/챕터/난이도를 완료했는지 기록합니다.
+-- 회원별로 어떤 모듈/챕터/난이도/문제를 완료했는지 기록합니다.
 -- Supabase 대시보드 > SQL Editor 에서 이 파일 내용을 붙여넣고 실행하세요.
+-- (이미 이 테이블을 만든 적이 있다면, 이 파일 대신 migrations/002_add_exercise_id.sql 을 실행하세요)
 
 create table if not exists progress (
   id uuid primary key default gen_random_uuid(),
@@ -8,10 +9,11 @@ create table if not exists progress (
   module_id text not null,       -- 예: '1_pandas'
   chapter_id text not null,      -- 예: '01_dataframe_basics'
   tier text not null check (tier in ('beginner', 'intermediate', 'advanced')), -- 초급/중급/고급
+  exercise_id text not null,     -- 예: 'count_rows' (한 챕터의 한 난이도 안에 여러 문제가 있음)
   completed boolean not null default false,
   completed_at timestamptz,
   created_at timestamptz not null default now(),
-  unique (user_id, module_id, chapter_id, tier)
+  unique (user_id, module_id, chapter_id, tier, exercise_id)
 );
 
 -- Row Level Security 활성화: 기본적으로 아무도 접근 못 하게 잠그고,

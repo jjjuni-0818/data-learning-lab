@@ -14,7 +14,7 @@
   gap: 8px;
   flex-shrink: 0;
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 15.5px;
 }
 
 .app-header .logo-dot {
@@ -29,7 +29,7 @@
   align-items: center;
   gap: 12px;
   min-width: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-muted);
 }
 
@@ -44,7 +44,7 @@
   flex-shrink: 0;
   white-space: nowrap;
   padding: 6px 12px;
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--color-text-muted);
   background: none;
   border: 1px solid var(--color-border);
