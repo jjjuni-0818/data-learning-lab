@@ -56,8 +56,8 @@ flowchart TD
 |---|---|
 | 프론트엔드 | React + TypeScript (Vite) |
 | 회원가입/로그인 · DB | Supabase (Auth + Postgres) |
-| 코드 에디터 | Monaco Editor *(예정)* |
-| 코드 실행 · 채점 | Pyodide — 브라우저에서 Python 실행 *(예정)* |
+| 코드 에디터 | Monaco Editor (연결 검증 완료) |
+| 코드 실행 · 채점 | Pyodide — 브라우저에서 Python 실행 (연결 검증 완료) |
 | 배포 | Vercel / GitHub Pages *(예정)* |
 
 ## 커리큘럼
@@ -72,9 +72,10 @@ flowchart TD
 ## 현재 진행 상황
 - [x] React + TypeScript 프로젝트 뼈대 생성 (Vite)
 - [x] Supabase 프로젝트 생성 및 연결 (회원가입/로그인 동작 확인 완료)
-- [ ] 브라우저 코드 에디터 + 실행 환경 (Monaco + Pyodide) 검증
+- [x] `progress` 테이블 + RLS 보안 정책 생성 ([supabase/schema.sql](supabase/schema.sql))
+- [x] 브라우저 코드 에디터 + 실행 환경 (Monaco + Pyodide) 검증
 - [ ] 챕터 1개 완성 — 개념설명 → 실습 → 자동채점 (초급/중급/고급)
-- [ ] 학습 진행률 저장 기능
+- [ ] 학습 진행률 저장 기능 (실제 화면에 연결)
 - [ ] 나머지 챕터 콘텐츠 제작
 
 ## 로컬 실행 방법
