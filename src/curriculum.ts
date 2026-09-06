@@ -34,7 +34,7 @@ export const CURRICULUM: CurriculumModule[] = [
       { id: '01_dataframe_basics', label: 'DataFrame이란?', built: true },
       { id: '02_data_loading_cleaning', label: '데이터 불러오기와 정제', built: true },
       { id: '03_data_exploration', label: '데이터 탐색과 분석', built: true },
-      { id: '04_data_visualization', label: '데이터 시각화', built: false },
+      { id: '04_data_visualization', label: '데이터 시각화', built: true },
       { id: '05_project_based_learning', label: '프로젝트 기반 학습', built: false },
     ],
   },

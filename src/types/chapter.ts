@@ -24,4 +24,6 @@ export interface ChapterContent {
   description: string
   exampleCode: string
   tiers: Tier[]
+  /** 이 챕터의 예제/문제를 실행하는 데 필요한 Pyodide 패키지. 기본값은 ['pandas'] */
+  pyodidePackages?: string[]
 }

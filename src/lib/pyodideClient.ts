@@ -16,21 +16,37 @@ declare global {
 }
 
 let pyodidePromise: Promise<PyodideInterface> | null = null
+// 이미 불러온 패키지 이름을 기록해서, 같은 패키지를 중복으로 다시 불러오지 않게 합니다.
+const loadedPackages = new Set<string>()
+// 패키지 불러오기 요청을 순서대로 처리하기 위한 대기열 (동시에 여러 챕터가
+// 서로 다른 패키지를 요청해도 겹치지 않게 순차 실행합니다).
+let packageQueue: Promise<void> = Promise.resolve()
 
 /**
  * Pyodide를 불러옵니다. 이미 불러오는 중이거나 불러온 적이 있으면 그 결과를 재사용합니다.
+ * Pyodide 런타임 자체는 앱 전체에서 딱 한 번만 불러오지만, 파이썬 패키지는
+ * 챕터마다 필요한 게 다를 수 있어서 (예: pandas만 필요한 챕터 vs matplotlib도
+ * 필요한 챕터) 호출할 때마다 "아직 안 불러온 패키지만" 추가로 불러옵니다.
  * @param packages 함께 불러올 파이썬 패키지 (예: ['pandas'])
  */
 export function getPyodide(packages: string[] = []): Promise<PyodideInterface> {
   if (!pyodidePromise) {
-    pyodidePromise = window.loadPyodide().then(async (pyodide) => {
-      if (packages.length > 0) {
-        await pyodide.loadPackage(packages)
+    pyodidePromise = window.loadPyodide()
+  }
+
+  const missing = packages.filter((p) => !loadedPackages.has(p))
+  if (missing.length > 0) {
+    packageQueue = packageQueue.then(async () => {
+      const pyodide = await pyodidePromise!
+      const stillMissing = missing.filter((p) => !loadedPackages.has(p))
+      if (stillMissing.length > 0) {
+        await pyodide.loadPackage(stillMissing)
+        stillMissing.forEach((p) => loadedPackages.add(p))
       }
-      return pyodide
     })
   }
-  return pyodidePromise
+
+  return packageQueue.then(() => pyodidePromise!)
 }
 
 /**

@@ -12,17 +12,22 @@ function progressKey(tier: string, exerciseId: string) {
   return `${tier}:${exerciseId}`
 }
 
-function ChapterPage({ chapterId, description, exampleCode, tiers }: ChapterContent) {
+// 예제 코드가 matplotlib 그래프를 그렸을 때, 이 마커로 시작하는 줄에
+// base64 PNG 이미지를 실어서 출력합니다. (pyodideClient.ts의 stdout 캡처를 그대로 재사용)
+const IMAGE_MARKER = '__IMAGE__:'
+
+function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackages }: ChapterContent) {
   const user = useUser()
   const found = findChapter(chapterId)
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
   const [passed, setPassed] = useState<Record<string, boolean>>({})
   const [exampleOutput, setExampleOutput] = useState('')
+  const [exampleImage, setExampleImage] = useState<string | null>(null)
   const runExampleRef = useRef<() => void>(() => {})
 
   useEffect(() => {
-    getPyodide(['pandas']).then(setPyodide)
-  }, [])
+    getPyodide(pyodidePackages ?? ['pandas']).then(setPyodide)
+  }, [pyodidePackages])
 
   useEffect(() => {
     if (!user || !found) return
@@ -66,7 +71,16 @@ function ChapterPage({ chapterId, description, exampleCode, tiers }: ChapterCont
   async function runExample() {
     if (!pyodide) return
     const { output, error } = await runCapturingOutput(pyodide, exampleCode)
-    setExampleOutput(error ? `❌ ${error}` : output)
+    if (error) {
+      setExampleOutput(`❌ ${error}`)
+      setExampleImage(null)
+      return
+    }
+    const lines = output.split('\n')
+    const imageLine = lines.find((l) => l.startsWith(IMAGE_MARKER))
+    const textLines = lines.filter((l) => !l.startsWith(IMAGE_MARKER))
+    setExampleOutput(textLines.join('\n').trim())
+    setExampleImage(imageLine ? imageLine.slice(IMAGE_MARKER.length) : null)
   }
 
   if (!user) {
@@ -126,6 +140,19 @@ function ChapterPage({ chapterId, description, exampleCode, tiers }: ChapterCont
           >
             {exampleOutput}
           </pre>
+        )}
+        {exampleImage && (
+          <img
+            src={`data:image/png;base64,${exampleImage}`}
+            alt="예제 실행 결과 그래프"
+            style={{
+              marginTop: 8,
+              maxWidth: '100%',
+              border: '1px solid var(--color-border)',
+              borderRadius: 8,
+              background: '#fff',
+            }}
+          />
         )}
       </div>
 
