@@ -84,7 +84,7 @@ flowchart TD
 3. Python + DB 연동 경험 *(완성)*
 4. ORM(SQLAlchemy)과 모델링 *(완성)*
 5. NoSQL(MongoDB) 이해와 활용 *(완성)*
-6. 프로젝트 기반 실습
+6. 프로젝트 기반 실습 *(완성)*
 
 ## 현재 진행 상황
 - [x] React + TypeScript 프로젝트 뼈대 생성 (Vite)
@@ -111,8 +111,8 @@ flowchart TD
 - [x] 챕터 12 완성 — "3. 데이터베이스(DB) 기초 > Python + DB 연동 경험" (재고 관리 예제로 UPDATE/DELETE, DB 행→딕셔너리 변환 → INSERT+lastrowid, 트랜잭션 rollback, upsert(INSERT ON CONFLICT) → 복합 CRUD 처리, 트랜잭션 일괄 롤백, 주문 처리 파이프라인)
 - [x] 챕터 13 완성 — "3. 데이터베이스(DB) 기초 > ORM(SQLAlchemy)과 모델링" (도서관리 예제로 SQL 없이 파이썬 클래스+객체로 DB를 다루는 ORM 패턴: 모델 정의+count/filter+order_by/session.get → 속성변경으로 UPDATE/session.delete/relationship으로 1:N 관계 → func.avg 집계/명시적 join/종합 리포트). micropip으로 SQLAlchemy를 설치하는 첫 챕터
 - [x] 챕터 14 완성 — "3. 데이터베이스(DB) 기초 > NoSQL(MongoDB) 이해와 활용" (mongomock으로 실제 MongoDB API 그대로 실습. insert_many+count_documents → find+$gte/$in 연산자+sort → find_one → update_one($set)/delete_many/distinct → aggregate($group, $sum, $avg)로 그룹별 집계까지)
+- [x] 챕터 15 완성 — "3. 데이터베이스(DB) 기초 > 프로젝트 기반 실습" (온라인 서점 미니 프로젝트: 주문 데이터는 SQLite, 리뷰 데이터는 mongomock으로 관리하며 두 DB를 공유 id로 연결·분석하는 폴리글랏 퍼시스턴스 실습. 스키마 설계+리뷰 적재+베스트셀러 조회 → 별점 집계/주문내역 조회/재고 트랜잭션 → 베스트셀러+평점 통합조회/인기-저평점 상품 탐지/서점 종합 리포트). **모듈3(데이터베이스 기초) 6챕터 전부 완성 — 전체 15/15 챕터 완성**
 - [ ] 대시보드 화면 (전체 진행률 %) 제작
-- [ ] 나머지 1개 챕터 콘텐츠 제작 (모듈3 마지막 챕터: 프로젝트 기반 실습)
 
 ## 로컬 실행 방법
 ```bash

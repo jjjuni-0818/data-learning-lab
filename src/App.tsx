@@ -20,6 +20,7 @@ import { sqlBasics } from './chapters/sqlBasics'
 import { pythonDbIntegration } from './chapters/pythonDbIntegration'
 import { ormSqlalchemy } from './chapters/ormSqlalchemy'
 import { nosqlMongodb } from './chapters/nosqlMongodb'
+import { dbProjectPractice } from './chapters/dbProjectPractice'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -41,6 +42,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '03_python_db_integration': pythonDbIntegration,
   '04_orm_sqlalchemy': ormSqlalchemy,
   '05_nosql_mongodb': nosqlMongodb,
+  '06_project_based_practice': dbProjectPractice,
 }
 
 function ChapterRoute() {
