@@ -54,7 +54,7 @@ function CurriculumSidebar() {
         return (
           <div className="sidebar-module" key={mod.label}>
             <div className={`sidebar-module-label ${hasBuiltChapter ? '' : 'disabled'}`}>
-              <span>{mod.label}</span>
+              <span className="sidebar-module-label-text">{mod.label}</span>
               {!hasBuiltChapter && <span className="sidebar-badge">준비중</span>}
             </div>
             {mod.chapters.map((ch) => (
@@ -62,7 +62,7 @@ function CurriculumSidebar() {
                 className={`sidebar-chapter ${ch.active ? 'active' : ''} ${ch.built ? '' : 'upcoming'}`}
                 key={ch.label}
               >
-                {ch.label}
+                <span className="sidebar-chapter-label">{ch.label}</span>
                 {!ch.built && <span className="sidebar-chapter-tag">예정</span>}
               </span>
             ))}
