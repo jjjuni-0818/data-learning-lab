@@ -14,6 +14,7 @@ import { projectBasedLearning } from './chapters/projectBasedLearning'
 import { vectorsMatrices } from './chapters/vectorsMatrices'
 import { weightedSum } from './chapters/weightedSum'
 import { functionsGraphs } from './chapters/functionsGraphs'
+import { dataSummaryStats } from './chapters/dataSummaryStats'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -24,6 +25,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '01_vectors_matrices': vectorsMatrices,
   '02_weighted_sum': weightedSum,
   '03_functions_graphs': functionsGraphs,
+  '04_data_summary_stats': dataSummaryStats,
   '01_dataframe_basics': dataframeBasics,
   '02_data_loading_cleaning': dataLoadingCleaning,
   '03_data_exploration': dataExploration,

@@ -24,7 +24,7 @@ export const CURRICULUM: CurriculumModule[] = [
       { id: '01_vectors_matrices', label: '벡터와 행렬로 데이터 표현하기', built: true },
       { id: '02_weighted_sum', label: '가중합과 계산 이해하기', built: true },
       { id: '03_functions_graphs', label: '함수와 그래프 이해하기', built: true },
-      { id: '04_data_summary_stats', label: '데이터 요약과 통계', built: false },
+      { id: '04_data_summary_stats', label: '데이터 요약과 통계', built: true },
     ],
   },
   {
