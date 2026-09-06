@@ -82,7 +82,7 @@ flowchart TD
 1. 데이터베이스 기본 개념 이해 *(완성)*
 2. SQL 기초 및 데이터 조회 *(완성)*
 3. Python + DB 연동 경험 *(완성)*
-4. ORM(SQLAlchemy)과 모델링
+4. ORM(SQLAlchemy)과 모델링 *(완성)*
 5. NoSQL(MongoDB) 이해와 활용
 6. 프로젝트 기반 실습
 
@@ -109,8 +109,9 @@ flowchart TD
 - [x] 챕터 10 완성 — "3. 데이터베이스(DB) 기초 > 데이터베이스 기본 개념 이해" (실제 MySQL 서버는 브라우저에서 구동 불가하여, 같은 SQL 문법·Python DB-API를 쓰는 SQLite로 대체: 테이블 생성+행 개수/컬럼 조회/기본키 제약 → JOIN/GROUP BY 집계/외래키 무결성 → 테이블 목록/스키마 요약/캡스톤). Pyodide에 micropip 설치 경로 추가(추후 SQLAlchemy·mongomock 챕터에서 재사용)
 - [x] 챕터 11 완성 — "3. 데이터베이스(DB) 기초 > SQL 기초 및 데이터 조회" (온라인 쇼핑몰 상품/주문 데이터: WHERE+ORDER BY+LIMIT → GROUP BY/HAVING 집계+LIKE 검색 → JOIN 기반 주문금액 계산/우수고객 랭킹/종합 매출 리포트)
 - [x] 챕터 12 완성 — "3. 데이터베이스(DB) 기초 > Python + DB 연동 경험" (재고 관리 예제로 UPDATE/DELETE, DB 행→딕셔너리 변환 → INSERT+lastrowid, 트랜잭션 rollback, upsert(INSERT ON CONFLICT) → 복합 CRUD 처리, 트랜잭션 일괄 롤백, 주문 처리 파이프라인)
+- [x] 챕터 13 완성 — "3. 데이터베이스(DB) 기초 > ORM(SQLAlchemy)과 모델링" (도서관리 예제로 SQL 없이 파이썬 클래스+객체로 DB를 다루는 ORM 패턴: 모델 정의+count/filter+order_by/session.get → 속성변경으로 UPDATE/session.delete/relationship으로 1:N 관계 → func.avg 집계/명시적 join/종합 리포트). micropip으로 SQLAlchemy를 설치하는 첫 챕터
 - [ ] 대시보드 화면 (전체 진행률 %) 제작
-- [ ] 나머지 3개 챕터 콘텐츠 제작 (모듈3 나머지)
+- [ ] 나머지 2개 챕터 콘텐츠 제작 (모듈3 나머지)
 
 ## 로컬 실행 방법
 ```bash

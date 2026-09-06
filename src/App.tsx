@@ -18,6 +18,7 @@ import { dataSummaryStats } from './chapters/dataSummaryStats'
 import { dbConcepts } from './chapters/dbConcepts'
 import { sqlBasics } from './chapters/sqlBasics'
 import { pythonDbIntegration } from './chapters/pythonDbIntegration'
+import { ormSqlalchemy } from './chapters/ormSqlalchemy'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -37,6 +38,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '01_db_concepts': dbConcepts,
   '02_sql_basics': sqlBasics,
   '03_python_db_integration': pythonDbIntegration,
+  '04_orm_sqlalchemy': ormSqlalchemy,
 }
 
 function ChapterRoute() {
