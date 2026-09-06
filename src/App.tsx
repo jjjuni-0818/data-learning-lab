@@ -37,9 +37,16 @@ function ChapterRoute() {
 
   const content = CHAPTER_CONTENT[found.chapter.id]
   if (!content) {
-    return <ChapterPlaceholder label={found.chapter.label} />
+    // key={found.chapter.id}: 챕터가 바뀔 때마다 ChapterPlaceholder를
+    // 완전히 새로 만들어서, 이전 챕터의 흔적이 안 남게 합니다.
+    return <ChapterPlaceholder key={found.chapter.id} label={found.chapter.label} />
   }
-  return <ChapterPage {...content} />
+  // key={content.chapterId}: React Router는 경로만 바뀌면 같은 위치의
+  // 컴포넌트를 재사용하려고 해서, key 없이는 챕터를 이동해도 이전 챕터의
+  // 실행 결과/채점 상태가 그대로 남아있는 버그가 있었습니다.
+  // key를 다르게 주면 React가 컴포넌트를 통째로 새로 만들어(state 초기화)
+  // 이 문제가 해결됩니다.
+  return <ChapterPage key={content.chapterId} {...content} />
 }
 
 function App() {
