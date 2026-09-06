@@ -213,15 +213,15 @@ def describe_summary(data, column_name):
 assert result['min'] == 70, f"결과: {result}"
 assert result['max'] == 90, f"결과: {result}"
 assert abs(result['mean'] - 80) < 0.01, f"결과: {result}"`,
-          hint: 'min(), max(), mean()을 각각 구해서 딕셔너리로 묶어보세요. describe()를 참고해도 좋아요.',
+          hint: "df[column_name].describe()를 호출하면 개수/평균/표준편차/최소/사분위수/최대가 담긴 결과가 나와요. 그 중 'min', 'max', 'mean' 값만 뽑아보세요.",
           solutionCode: `import pandas as pd
 
 def describe_summary(data, column_name):
     df = pd.DataFrame(data)
-    col = df[column_name]
-    return {'min': col.min(), 'max': col.max(), 'mean': col.mean()}
+    stats = df[column_name].describe()
+    return {'min': stats['min'], 'max': stats['max'], 'mean': stats['mean']}
 `,
-          solutionExplain: 'describe()를 쓰면 개수/평균/표준편차/최소/사분위수/최대를 한 번에 볼 수 있는데, 여기서는 그 중 핵심 3가지만 직접 뽑아봤어요.',
+          solutionExplain: 'describe()는 데이터를 처음 살펴볼 때 가장 많이 쓰는 메서드예요. count/mean/std/min/25%/50%/75%/max를 한 번에 계산해주는데, 여기서는 그 결과에서 필요한 값만 골라 썼습니다.',
         },
       ],
     },

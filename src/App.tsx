@@ -8,6 +8,7 @@ import CurriculumSidebar from './components/CurriculumSidebar'
 import { DEFAULT_CHAPTER_ID, findChapter } from './curriculum'
 import { dataframeBasics } from './chapters/dataframeBasics'
 import { dataLoadingCleaning } from './chapters/dataLoadingCleaning'
+import { dataExploration } from './chapters/dataExploration'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -17,6 +18,7 @@ import './App.css'
 const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '01_dataframe_basics': dataframeBasics,
   '02_data_loading_cleaning': dataLoadingCleaning,
+  '03_data_exploration': dataExploration,
 }
 
 function ChapterRoute() {
