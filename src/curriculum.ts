@@ -42,7 +42,7 @@ export const CURRICULUM: CurriculumModule[] = [
     id: '3_db_basics',
     label: '3. 데이터베이스(DB) 기초',
     chapters: [
-      { id: '01_db_concepts', label: '데이터베이스 기본 개념 이해', built: false },
+      { id: '01_db_concepts', label: '데이터베이스 기본 개념 이해', built: true },
       { id: '02_sql_basics', label: 'SQL 기초 및 데이터 조회', built: false },
       { id: '03_python_db_integration', label: 'Python + DB 연동 경험', built: false },
       { id: '04_orm_sqlalchemy', label: 'ORM(SQLAlchemy)과 모델링', built: false },

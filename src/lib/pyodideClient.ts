@@ -6,6 +6,7 @@ export interface PyodideInterface {
   loadPackage: (packages: string | string[]) => Promise<void>
   setStdout: (opts: { batched: (msg: string) => void }) => void
   setStderr: (opts: { batched: (msg: string) => void }) => void
+  pyimport: (name: string) => { install: (name: string) => Promise<void> }
 }
 
 // index.html의 CDN 스크립트가 전역으로 등록해주는 함수입니다.
@@ -47,6 +48,35 @@ export function getPyodide(packages: string[] = []): Promise<PyodideInterface> {
   }
 
   return packageQueue.then(() => pyodidePromise!)
+}
+
+// micropip(PyPI에서 패키지를 설치하는 도구)으로 설치한 패키지 이름을 기록해서,
+// 같은 패키지를 중복 설치하지 않게 합니다. (SQLAlchemy, mongomock처럼
+// Pyodide 기본 패키지 목록에 없는 라이브러리는 loadPackage가 아니라
+// micropip으로 설치해야 합니다)
+const installedMicropipPackages = new Set<string>()
+let micropipQueue: Promise<void> = Promise.resolve()
+
+/**
+ * Pyodide 기본 패키지 목록에 없는 라이브러리(예: sqlalchemy, mongomock)를
+ * micropip으로 설치합니다. 이미 설치한 패키지는 다시 설치하지 않습니다.
+ */
+export function ensureMicropipPackages(pyodide: PyodideInterface, packageNames: string[]): Promise<void> {
+  const missing = packageNames.filter((p) => !installedMicropipPackages.has(p))
+  if (missing.length === 0) return micropipQueue
+
+  micropipQueue = micropipQueue.then(async () => {
+    const stillMissing = missing.filter((p) => !installedMicropipPackages.has(p))
+    if (stillMissing.length === 0) return
+    await pyodide.loadPackage('micropip')
+    const micropip = pyodide.pyimport('micropip')
+    for (const name of stillMissing) {
+      await micropip.install(name)
+      installedMicropipPackages.add(name)
+    }
+  })
+
+  return micropipQueue
 }
 
 /**

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Editor, { type OnMount } from '@monaco-editor/react'
 import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../hooks/useUser'
-import { getPyodide, runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
+import { ensureMicropipPackages, getPyodide, runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
 import ExerciseCard from '../components/ExerciseCard'
 import { findChapter } from '../curriculum'
 import type { ChapterContent, Tier } from '../types/chapter'
@@ -16,7 +16,7 @@ function progressKey(tier: string, exerciseId: string) {
 // base64 PNG 이미지를 실어서 출력합니다. (pyodideClient.ts의 stdout 캡처를 그대로 재사용)
 const IMAGE_MARKER = '__IMAGE__:'
 
-function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackages }: ChapterContent) {
+function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackages, micropipPackages }: ChapterContent) {
   const user = useUser()
   const found = findChapter(chapterId)
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
@@ -26,8 +26,19 @@ function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackag
   const runExampleRef = useRef<() => void>(() => {})
 
   useEffect(() => {
-    getPyodide(pyodidePackages ?? ['pandas']).then(setPyodide)
-  }, [pyodidePackages])
+    let cancelled = false
+    async function load() {
+      const py = await getPyodide(pyodidePackages ?? ['pandas'])
+      if (micropipPackages?.length) {
+        await ensureMicropipPackages(py, micropipPackages)
+      }
+      if (!cancelled) setPyodide(py)
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [pyodidePackages, micropipPackages])
 
   useEffect(() => {
     if (!user || !found) return
@@ -92,7 +103,10 @@ function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackag
   }
 
   if (!pyodide) {
-    return <p style={{ fontSize: 14, color: '#666' }}>⏳ 파이썬 + pandas 환경을 불러오는 중... (처음 한 번은 몇 초 걸려요)</p>
+    const loadingHint = micropipPackages?.length
+      ? '⏳ 파이썬 환경을 불러오는 중... (이 챕터는 추가 라이브러리를 설치해서 조금 더 걸릴 수 있어요)'
+      : '⏳ 파이썬 + pandas 환경을 불러오는 중... (처음 한 번은 몇 초 걸려요)'
+    return <p style={{ fontSize: 14, color: '#666' }}>{loadingHint}</p>
   }
 
   runExampleRef.current = runExample

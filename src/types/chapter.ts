@@ -26,4 +26,6 @@ export interface ChapterContent {
   tiers: Tier[]
   /** 이 챕터의 예제/문제를 실행하는 데 필요한 Pyodide 패키지. 기본값은 ['pandas'] */
   pyodidePackages?: string[]
+  /** Pyodide 기본 목록에 없어서 micropip으로 추가 설치해야 하는 패키지 (예: sqlalchemy, mongomock) */
+  micropipPackages?: string[]
 }
