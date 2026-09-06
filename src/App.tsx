@@ -16,6 +16,7 @@ import { weightedSum } from './chapters/weightedSum'
 import { functionsGraphs } from './chapters/functionsGraphs'
 import { dataSummaryStats } from './chapters/dataSummaryStats'
 import { dbConcepts } from './chapters/dbConcepts'
+import { sqlBasics } from './chapters/sqlBasics'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -33,6 +34,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '04_data_visualization': dataVisualization,
   '05_project_based_learning': projectBasedLearning,
   '01_db_concepts': dbConcepts,
+  '02_sql_basics': sqlBasics,
 }
 
 function ChapterRoute() {
