@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Editor, { type OnMount } from '@monaco-editor/react'
 import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../hooks/useUser'
 import { ensureMicropipPackages, getPyodide, runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
 import ExerciseCard from '../components/ExerciseCard'
-import { findChapter } from '../curriculum'
+import { findChapter, findNextChapter } from '../curriculum'
 import type { ChapterContent, Tier } from '../types/chapter'
 
 // 진행률은 "tier:exerciseId" 형태의 키로 관리합니다.
@@ -18,6 +19,7 @@ const IMAGE_MARKER = '__IMAGE__:'
 
 function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackages, micropipPackages }: ChapterContent) {
   const user = useUser()
+  const navigate = useNavigate()
   const found = findChapter(chapterId)
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
   const [passed, setPassed] = useState<Record<string, boolean>>({})
@@ -118,6 +120,7 @@ function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackag
   }
 
   const chapterIndex = found.module.chapters.findIndex((ch) => ch.id === chapterId)
+  const nextChapter = findNextChapter(chapterId)
 
   return (
     <div>
@@ -226,6 +229,46 @@ function ChapterPage({ chapterId, description, exampleCode, tiers, pyodidePackag
           </div>
         )
       })}
+
+      {tiers.length > 0 && isTierComplete(tiers[tiers.length - 1]) && (
+        <div
+          style={{
+            marginTop: 8,
+            padding: 20,
+            border: '1px solid var(--color-accent)',
+            borderRadius: 10,
+            background: 'var(--color-accent-soft)',
+            textAlign: 'center',
+          }}
+        >
+          {nextChapter ? (
+            <>
+              <p style={{ fontSize: 14, margin: '0 0 12px', color: 'var(--color-text-muted)' }}>
+                🎉 이 챕터의 모든 문제를 통과했어요!
+              </p>
+              <button
+                onClick={() => navigate(`/chapter/${nextChapter.chapter.id}`)}
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  padding: '10px 20px',
+                  background: 'var(--color-accent)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                }}
+              >
+                다음 챕터로 넘어가기 · {nextChapter.chapter.label} →
+              </button>
+            </>
+          ) : (
+            <p style={{ fontSize: 15, fontWeight: 700, margin: 0, color: 'var(--color-accent)' }}>
+              🏆 축하해요! 커리큘럼의 모든 챕터를 완료했어요!
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 }

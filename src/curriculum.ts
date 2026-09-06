@@ -62,3 +62,22 @@ export function findChapter(chapterId: string): { module: CurriculumModule; chap
   }
   return undefined
 }
+
+/**
+ * 현재 챕터 다음으로 "이미 콘텐츠가 만들어진(built: true)" 챕터를 찾습니다.
+ * 모듈 경계를 넘어서도 커리큘럼 순서대로 다음 챕터를 찾고, 없으면 undefined
+ * (= 마지막 챕터까지 다 왔다는 뜻)를 반환합니다.
+ */
+export function findNextChapter(
+  chapterId: string,
+): { module: CurriculumModule; chapter: CurriculumChapter } | undefined {
+  const flat: { module: CurriculumModule; chapter: CurriculumChapter }[] = []
+  for (const mod of CURRICULUM) {
+    for (const chapter of mod.chapters) {
+      flat.push({ module: mod, chapter })
+    }
+  }
+  const currentIndex = flat.findIndex((entry) => entry.chapter.id === chapterId)
+  if (currentIndex === -1) return undefined
+  return flat.slice(currentIndex + 1).find((entry) => entry.chapter.built)
+}
