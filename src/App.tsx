@@ -10,6 +10,7 @@ import { dataframeBasics } from './chapters/dataframeBasics'
 import { dataLoadingCleaning } from './chapters/dataLoadingCleaning'
 import { dataExploration } from './chapters/dataExploration'
 import { dataVisualization } from './chapters/dataVisualization'
+import { projectBasedLearning } from './chapters/projectBasedLearning'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -21,6 +22,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '02_data_loading_cleaning': dataLoadingCleaning,
   '03_data_exploration': dataExploration,
   '04_data_visualization': dataVisualization,
+  '05_project_based_learning': projectBasedLearning,
 }
 
 function ChapterRoute() {
