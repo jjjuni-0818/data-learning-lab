@@ -46,7 +46,7 @@ export const CURRICULUM: CurriculumModule[] = [
       { id: '02_sql_basics', label: 'SQL 기초 및 데이터 조회', built: true },
       { id: '03_python_db_integration', label: 'Python + DB 연동 경험', built: true },
       { id: '04_orm_sqlalchemy', label: 'ORM(SQLAlchemy)과 모델링', built: true },
-      { id: '05_nosql_mongodb', label: 'NoSQL(MongoDB) 이해와 활용', built: false },
+      { id: '05_nosql_mongodb', label: 'NoSQL(MongoDB) 이해와 활용', built: true },
       { id: '06_project_based_practice', label: '프로젝트 기반 실습', built: false },
     ],
   },
