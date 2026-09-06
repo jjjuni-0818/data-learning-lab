@@ -17,6 +17,7 @@ import { functionsGraphs } from './chapters/functionsGraphs'
 import { dataSummaryStats } from './chapters/dataSummaryStats'
 import { dbConcepts } from './chapters/dbConcepts'
 import { sqlBasics } from './chapters/sqlBasics'
+import { pythonDbIntegration } from './chapters/pythonDbIntegration'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -35,6 +36,7 @@ const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '05_project_based_learning': projectBasedLearning,
   '01_db_concepts': dbConcepts,
   '02_sql_basics': sqlBasics,
+  '03_python_db_integration': pythonDbIntegration,
 }
 
 function ChapterRoute() {
