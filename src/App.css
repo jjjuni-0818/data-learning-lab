@@ -55,7 +55,14 @@
   background: var(--color-bg);
 }
 
+.app-body {
+  display: flex;
+  align-items: flex-start;
+}
+
 .app-main {
+  flex: 1;
+  min-width: 0;
   max-width: 720px;
   margin: 0 auto;
   padding: 40px 24px 80px;

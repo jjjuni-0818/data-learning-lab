@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import Editor from '@monaco-editor/react'
+import { useEffect, useRef, useState } from 'react'
+import Editor, { type OnMount } from '@monaco-editor/react'
 import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../hooks/useUser'
 import { getPyodide, runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
@@ -88,6 +88,9 @@ function Chapter1() {
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
   const [passed, setPassed] = useState<Record<string, boolean>>({})
   const [exampleOutput, setExampleOutput] = useState('')
+  // Editor의 onMount는 마운트 시점에 한 번만 호출되므로, 항상 최신 runExample을
+  // 실행할 수 있게 ref를 하나 만들어둡니다. (Hooks 규칙상 조건부 return보다 위에 있어야 함)
+  const runExampleRef = useRef<() => void>(() => {})
 
   // 파이썬 + pandas 환경을 한 번만 불러옵니다.
   useEffect(() => {
@@ -143,6 +146,14 @@ function Chapter1() {
     return <p style={{ fontSize: 13, color: '#666' }}>⏳ 파이썬 + pandas 환경을 불러오는 중... (처음 한 번은 몇 초 걸려요)</p>
   }
 
+  runExampleRef.current = runExample
+
+  const handleExampleEditorMount: OnMount = (editor, monacoInstance) => {
+    editor.addCommand(monacoInstance.KeyMod.Shift | monacoInstance.KeyCode.Enter, () => {
+      runExampleRef.current()
+    })
+  }
+
   return (
     <div>
       <div style={{ fontSize: 11, fontWeight: 700, color: '#2563eb', marginBottom: 4 }}>
@@ -159,11 +170,13 @@ function Chapter1() {
           height="140px"
           defaultLanguage="python"
           value={EXAMPLE_CODE}
+          onMount={handleExampleEditorMount}
           options={{ readOnly: true, fontSize: 13, minimap: { enabled: false } }}
         />
-        <button onClick={runExample} style={{ marginTop: 8 }}>
-          ▶ 실행해보기
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+          <button onClick={runExample}>▶ 실행해보기</button>
+          <span style={{ fontSize: 11, color: '#999' }}>Shift+Enter로도 실행돼요</span>
+        </div>
         {exampleOutput && (
           <pre
             style={{

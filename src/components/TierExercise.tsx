@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Editor from '@monaco-editor/react'
+import { useRef, useState } from 'react'
+import Editor, { type OnMount } from '@monaco-editor/react'
 import { runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
 
 interface TierExerciseProps {
@@ -54,6 +54,9 @@ function TierExercise({
   const [showHint, setShowHint] = useState(false)
   const [showSolution, setShowSolution] = useState(false)
   const [passed, setPassed] = useState(initiallyPassed)
+  // Editor의 onMount는 마운트 시점에 한 번만 호출되므로, 항상 최신 handleGrade를
+  // 실행할 수 있게 ref를 하나 만들어둡니다. (Hooks 규칙상 조건부 return보다 위에 있어야 함)
+  const handleGradeRef = useRef<() => void>(() => {})
 
   if (locked) {
     return (
@@ -102,6 +105,14 @@ except Exception as e:
     setRunning(false)
   }
 
+  handleGradeRef.current = handleGrade
+
+  const handleEditorMount: OnMount = (editor, monacoInstance) => {
+    editor.addCommand(monacoInstance.KeyMod.Shift | monacoInstance.KeyCode.Enter, () => {
+      handleGradeRef.current()
+    })
+  }
+
   return (
     <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, marginBottom: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
@@ -127,10 +138,11 @@ except Exception as e:
         defaultLanguage="python"
         value={code}
         onChange={(v) => setCode(v ?? '')}
+        onMount={handleEditorMount}
         options={{ fontSize: 13, minimap: { enabled: false } }}
       />
 
-      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
         <button onClick={handleGrade} disabled={running}>
           채점하기
         </button>
@@ -140,6 +152,7 @@ except Exception as e:
             {showSolution ? '정답 숨기기' : '정답 해설 보기'}
           </button>
         )}
+        <span style={{ fontSize: 11, color: '#999' }}>Shift+Enter로도 채점돼요</span>
       </div>
 
       {showHint && (
