@@ -5,7 +5,7 @@ import { useUser } from '../hooks/useUser'
 import { getPyodide, runCapturingOutput, type PyodideInterface } from '../lib/pyodideClient'
 import ExerciseCard from '../components/ExerciseCard'
 
-const MODULE_ID = '1_pandas'
+const MODULE_ID = '2_data_viz'
 const CHAPTER_ID = '01_dataframe_basics'
 
 const EXAMPLE_CODE = `import pandas as pd
@@ -324,7 +324,7 @@ function Chapter1() {
   return (
     <div>
       <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-accent)', marginBottom: 4 }}>
-        1. PANDAS 데이터 분석 · CHAPTER 1
+        2. 데이터 시각화 · CHAPTER 1
       </div>
       <h1 style={{ fontSize: 21, marginBottom: 12 }}>DataFrame이란?</h1>
       <p style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 16 }}>
