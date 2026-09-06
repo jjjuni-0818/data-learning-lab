@@ -12,6 +12,7 @@ import { dataExploration } from './chapters/dataExploration'
 import { dataVisualization } from './chapters/dataVisualization'
 import { projectBasedLearning } from './chapters/projectBasedLearning'
 import { vectorsMatrices } from './chapters/vectorsMatrices'
+import { weightedSum } from './chapters/weightedSum'
 import type { ChapterContent } from './types/chapter'
 import './App.css'
 
@@ -20,6 +21,7 @@ import './App.css'
 // 여기 등록이 없으면 자동으로 ChapterPlaceholder("준비중")가 보입니다.
 const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   '01_vectors_matrices': vectorsMatrices,
+  '02_weighted_sum': weightedSum,
   '01_dataframe_basics': dataframeBasics,
   '02_data_loading_cleaning': dataLoadingCleaning,
   '03_data_exploration': dataExploration,
