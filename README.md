@@ -58,6 +58,7 @@ flowchart TD
 | 회원가입/로그인 · DB | Supabase (Auth + Postgres) |
 | 코드 에디터 | Monaco Editor (연결 검증 완료) |
 | 코드 실행 · 채점 | Pyodide — 브라우저에서 Python 실행 (연결 검증 완료) |
+| 화면 이동(라우팅) | React Router (`react-router-dom`) — 챕터별 URL(`/chapter/:chapterId`) 이동 |
 | 배포 | Vercel / GitHub Pages *(예정)* |
 
 ## 커리큘럼
@@ -90,9 +91,11 @@ flowchart TD
 - [x] Supabase 프로젝트 생성 및 연결 (회원가입/로그인 동작 확인 완료)
 - [x] `progress` 테이블 + RLS 보안 정책 생성 ([supabase/schema.sql](supabase/schema.sql))
 - [x] 브라우저 코드 에디터 + 실행 환경 (Monaco + Pyodide) 검증
-- [x] 챕터 1 완성 — "1. Pandas > DataFrame이란?" (개념설명 → 예제 → 초급/중급/고급 자동채점)
+- [x] 챕터 1 완성 — "2. 데이터 시각화 > DataFrame이란?" (개념설명 → 예제 → 초급/중급/고급 각 3문제씩 자동채점)
 - [x] 학습 진행률 저장 기능 — 통과 시 Supabase에 저장, 새로고침해도 유지됨
 - [x] 회원가입/로그인 화면 디자인 — 데스크톱 2단 분할 / 모바일 반응형
+- [x] 전체 커리큘럼 3모듈 15챕터 구조 확정, 사이드바에 전체 로드맵 노출
+- [x] 챕터 간 라우팅 — 사이드바 클릭 시 실제 페이지 전환(`/chapter/:chapterId`), 새로고침해도 유지, 미완성 챕터는 "준비중" 화면 표시
 - [ ] 대시보드 화면 (전체 진행률 %) 제작
 - [ ] 나머지 챕터 콘텐츠 제작
 

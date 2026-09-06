@@ -59,6 +59,12 @@
   border-radius: 8px;
   font-size: 13.5px;
   color: var(--color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sidebar-chapter:hover {
+  background: var(--color-bg);
 }
 
 .sidebar-chapter-label {
